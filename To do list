@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_TASKS 100
+#define TASK_LENGTH 100
+
+char tasks[MAX_TASKS][TASK_LENGTH];
+int task_count = 0;
+
+// Function to display the menu
+void display_menu() {
+    printf("\nTo-Do List Menu:\n");
+    printf("1. View To-Do List\n");
+    printf("2. Add Task\n");
+    printf("3. Remove Task\n");
+    printf("4. Quit\n");
+}
+
+// Function to view tasks
+void view_tasks() {
+    if (task_count == 0) {
+        printf("\nYour to-do list is empty.\n");
+    } else {
+        printf("\nYour To-Do List:\n");
+        for (int i = 0; i < task_count; i++) {
+            printf("%d. %s\n", i + 1, tasks[i]);
+        }
+    }
+}
+
+// Function to add a task
+void add_task() {
+    if (task_count >= MAX_TASKS) {
+        printf("Your to-do list is full.\n");
+        return;
+    }
+
+    char task[TASK_LENGTH];
+    printf("\nEnter the task you want to add: ");
+    getchar(); // Consume the newline character left in the buffer
+    fgets(task, TASK_LENGTH, stdin);
+    task[strcspn(task, "\n")] = '\0'; // Remove the trailing newline character
+    strcpy(tasks[task_count], task);
+    task_count++;
+    printf("'%s' has been added to your to-do list.\n", task);
+}
+
+// Function to remove a task
+void remove_task() {
+    view_tasks();
+    if (task_count == 0) {
+        return;
+    }
+
+    int task_num;
+    printf("\nEnter the number of the task you want to remove: ");
+    scanf("%d", &task_num);
+
+    if (task_num < 1 || task_num > task_count) {
+        printf("Invalid task number.\n");
+        return;
+    }
+
+    for (int i = task_num - 1; i < task_count - 1; i++) {
+        strcpy(tasks[i], tasks[i + 1]);
+    }
+    task_count--;
+    printf("Task %d has been removed from your to-do list.\n", task_num);
+}
+
+// Main program loop
+int main() {
+    int choice;
+
+    while (1) {
+        display_menu();
+        printf("\nEnter your choice (1-4): ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                view_tasks();
+                break;
+            case 2:
+                add_task();
+                break;
+            case 3:
+                remove_task();
+                break;
+            case 4:
+                printf("Goodbye!\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please enter a number between 1 and 4.\n");
+        }
+    }
+
+    return 0;
+}
