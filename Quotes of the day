@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    char question[256];
+    char options[4][100];
+    char correct_answer;
+} QuizQuestion;
+
+void displayQuestion(QuizQuestion q) {
+    printf("%s\n", q.question);
+    for (int i = 0; i < 4; i++) {
+        printf("%c. %s\n", 'A' + i, q.options[i]);
+    }
+}
+
+int checkAnswer(QuizQuestion q, char answer) {
+    return (answer == q.correct_answer);
+}
+
+int main() {
+    QuizQuestion questions[2] = {
+        {"What is the capital of France?",
+         {"Berlin", "Madrid", "Paris", "Rome"},
+         'C'},
+        {"What is 2 + 2?",
+         {"3", "4", "5", "6"},
+         'B'}
+    };
+
+    int score = 0;
+    char userAnswer;
+    int numQuestions = sizeof(questions) / sizeof(questions[0]);
+
+    for (int i = 0; i < numQuestions; i++) {
+        displayQuestion(questions[i]);
+        printf("Enter your answer (A, B, C, D): ");
+        scanf(" %c", &userAnswer);
+
+        if (checkAnswer(questions[i], userAnswer)) {
+            printf("Correct!\n");
+            score++;
+        } else {
+            printf("Incorrect. The correct answer was %c.\n", questions[i].correct_answer);
+        }
+    }
+
+    printf("Quiz Completed! Your score is %d/%d\n", score, numQuestions);
+
+    return 0;
+}#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define NUM_QUOTES 5
+
+const char *quotes[NUM_QUOTES] = {
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "Life is what happens when you're busy making other plans. - John Lennon",
+    "Do not watch the clock. Do what it does. Keep going. - Sam Levenson",
+    "Keep your face always toward the sunshine—and shadows will fall behind you. - Walt Whitman",
+    "The best time to plant a tree was 20 years ago. The second best time is now. - Chinese Proverb"
+};
+
+void print_random_quote() {
+    srand(time(NULL));
+    int index = rand() % NUM_QUOTES;
+    printf("%s\n", quotes[index]);
+}
+
+int main() {
+    print_random_quote();
+    return 0;
+}
